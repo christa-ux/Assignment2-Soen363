@@ -1,54 +1,67 @@
 import psycopg2
 
-# Function to insert movie data into PostgreSQL
 def insert_movie_data(movie_data):
     try:
-        # Connect to the PostgreSQL database
         conn = psycopg2.connect(
-            dbname="Assignment2-Soen363",  
+            dbname="Assignment2-Soen363",
             user="postgres",
             password="Postgres@123",
             host="localhost",
             port="5432"
         )
         cursor = conn.cursor()
-        
-        # Extract relevant fields from the movie data
+
+        # Extract main movie details
+        tmdb_id = movie_data.get('tmdbID')
+        imdb_id = movie_data.get('imdbID')  # Ensure this is a string
         title = movie_data.get('title', 'Unknown')
         plot = movie_data.get('plot', 'No plot available')
         release_year = movie_data.get('year', 0)
-        contentRating = movie_data.get('contentRating', 'N/A')
+        content_rating = movie_data.get('contentRating', 'N/A')
         viewer_rating = movie_data.get('rating', 0.0)
         original_language = movie_data.get('language', 'Unknown')
 
-        # Insert data into the Movie table
+        # Get rID for contentRating
+        cursor.execute("SELECT rID FROM contentRating WHERE rating = %s", (content_rating,))
+        content_rating_id = cursor.fetchone()
+
+        if content_rating_id:
+            content_rating_id = content_rating_id[0]
+        else:
+            print(f"Content rating '{content_rating}' not found in the database.")
+            return
+
+        # Insert movie data into the Movie table
         cursor.execute("""
-            INSERT INTO Movie (title, plot, releaseYear, contentRating, viewerRating, original_language)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (title, plot, release_year, contentRating, viewer_rating, original_language))
-        
+            INSERT INTO Movie (tmdbID, imdbID, title, plot, releaseYear, contentRating, viewerRating, original_language)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING mID
+        """, (tmdb_id, imdb_id, title, plot, release_year, content_rating_id, viewer_rating, original_language))
+        movie_id = cursor.fetchone()[0]
+
         # Commit the transaction
         conn.commit()
-        
-        # Close cursor and connection
         cursor.close()
         conn.close()
-        
+
         print(f"Inserted movie: {title}")
     
     except Exception as e:
         print(f"Error inserting movie data: {e}")
 
-# Example usage
-# You would get movie data from fetch_movie_data.py, here we simulate the movie data
-movie_data = {
+# Example movie data for testing
+example_movie_data = {
+    'tmdbID': 238,
+    'imdbID': 'tt0068646',
     'title': 'The Godfather',
-    'plot': 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
+    'plot': 'The aging patriarch...',
     'year': 1972,
     'contentRating': 'R',
     'rating': 9.2,
-    'language': 'English'
+    'language': 'English',
+    'genres': ['Crime', 'Drama'],
+    'actors': ['Marlon Brando', 'Al Pacino'],
+    'directors': ['Francis Ford Coppola']
 }
 
-
-insert_movie_data(movie_data)
+insert_movie_data(example_movie_data)

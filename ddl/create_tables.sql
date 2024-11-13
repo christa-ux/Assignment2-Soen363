@@ -70,11 +70,11 @@ CREATE TABLE Movie (   --entity Movie
     watchmodeID INTEGER,   -- Optional Watchmode ID
     title VARCHAR(100) NOT NULL, 
     plot VARCHAR(500) NOT NULL,
-    contentRating VARCHAR(10) NOT NULL,   -- Foreign key 
+    content_Rating VARCHAR(10) NOT NULL,   -- Foreign key 
     viewerRating NUMERIC(3, 1) CHECK (viewerRating >= 0 AND viewerRating <= 10), -- Viewers rating (can go from 0 to 10, with 1 decimal)
     releaseYear INT CHECK (releaseYear >= 1888 AND releaseYear <= EXTRACT(YEAR FROM CURRENT_DATE)),  -- Oldest movie was made in 1888
     original_language VARCHAR(50) NOT NULL, 
-    FOREIGN KEY (contentRating) REFERENCES contentRating (rID)
+    FOREIGN KEY (content_Rating) REFERENCES contentRating (rating)
 );
 
 
