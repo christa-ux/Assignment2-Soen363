@@ -10,8 +10,8 @@ SELECT
 FROM 
     "Movie" m
 LEFT JOIN 
-    Moviekeyword mk ON m.mID = mk.movieID
+    "Moviekeyword" mk ON m.mID = mk.movieID
 LEFT JOIN 
-    Moviecountry mc ON m.mID = mc.movieID
+    "Moviecountry" mc ON m.mID = mc.movieID
 GROUP BY 
     m.tmdbID, m.imdbID, m.title, m.plot, m.content_Rating;

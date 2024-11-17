@@ -1,8 +1,11 @@
+
+--part 7
+
 --A 
 SELECT 
-    COUNT(CASE WHEN imdbID IS NOT NULL THEN 1 END) AS with_imdb_id,
-    COUNT(CASE WHEN imdbID IS NULL THEN 1 END) AS without_imdb_id
-FROM Movie;
+    COUNT(CASE WHEN "imdbID" IS NOT NULL THEN 1 END) AS with_imdb_id,
+    COUNT(CASE WHEN "imdbID" IS NULL THEN 1 END) AS without_imdb_id
+FROM "Movie";
 
 
 --B
@@ -13,11 +16,11 @@ SELECT
     m.releaseYear, 
     m.watchmodeID
 FROM 
-    Movie m
+    "Movie" m
 JOIN 
-    movieactor ma ON m.mID = ma.movieID
+    "movieactor" ma ON m.mID = ma.movieID
 JOIN 
-    Actor a ON ma.actorID = a.aID
+    "Actor" a ON ma.actorID = a.aID
 WHERE 
     a.aFirst = 'ActorFirstName' AND a.aLast = 'ActorLastName'
     AND m.releaseYear BETWEEN 2000 AND 2020;
