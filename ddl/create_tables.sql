@@ -1,3 +1,6 @@
+
+--part 1: 
+
 -- In a M-to-N relationship, we have 3 tables 
 --      -->(2 being the entities, and one being the relationship)
 
