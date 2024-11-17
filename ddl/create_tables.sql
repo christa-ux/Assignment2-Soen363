@@ -63,7 +63,7 @@ CREATE TABLE contentRating (   -- using MPAA (options are: G, PG, PG-13, R, NC-1
     rating VARCHAR(10) UNIQUE NOT NULL  
 );
 
-CREATE TABLE Movie (   --entity Movie
+CREATE TABLE "Movie" (   --entity Movie
     mID SERIAL PRIMARY KEY, 
     tmdbID INTEGER NOT NULL UNIQUE,    -- Required TMDB ID
     imdbID INTEGER UNIQUE,   -- Optional IMDB ID
