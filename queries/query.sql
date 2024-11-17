@@ -66,7 +66,6 @@ JOIN
 GROUP BY 
     l.lName
 ORDER BY 
-+
     movie_count DESC;
 
 
