@@ -1,3 +1,5 @@
+#part 2: 
+
 import requests
 import json
 
